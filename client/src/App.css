@@ -1,0 +1,14 @@
+@import "~primereact/resources/themes/saga-blue/theme.css";
+@import "~primereact/resources/primereact.min.css";
+@import "~primeicons/primeicons.css";
+@import "~primeflex/primeflex.min.css";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #F6F6F6;
+}
