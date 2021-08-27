@@ -14,6 +14,9 @@ import {Tooltip} from "primereact/tooltip";
 import Circle from "../tools/Circle";
 import Eraser from "../tools/Eraser";
 import Line from "../tools/Line";
+import undo from '../assets/img/undo.svg'
+import redo from '../assets/img/redo.svg'
+import save from '../assets/img/save.svg'
 
 const ToolBar = () => {
 	useEffect(() => {
@@ -56,7 +59,38 @@ const ToolBar = () => {
 				toolState.setTool(new Eraser(canvasState.canvas))
 			}
 		},
+		{
+			label: 'Отменить',
+			icon: () => <img className='cursor-pointer' alt="Undo" src={undo} width="100%"/>,
+			command: () => {
+				canvasState.undo()
+			}
+		},
+		{
+			label: 'Вернуть',
+			icon: () => <img className='cursor-pointer' alt="Redo" src={redo} width="100%"/>,
+			command: () => {
+				canvasState.redo()
+			}
+		},
+		{
+			label: 'Cохранить',
+			icon: () => <img className='cursor-pointer' alt="Save" src={save} width="100%"/>,
+			command: () => {
+				download()
+			}
+		},
 	];
+
+	const download = () => {
+		const dataUrl = canvasState.canvas.toDataURL()
+		const a = document.createElement('a')
+		a.href = dataUrl
+		a.download = `f${(+new Date()).toString(16)}.jpg`
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
+	}
 
 	return (
 		<>

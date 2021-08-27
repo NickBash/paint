@@ -10,9 +10,13 @@ const Canvas = observer(() => {
 		canvasState.setCanvas(canvasRef.current)
 	}, [])
 
+	const mouseDownHandler = () => {
+		canvasState.pushToUndo(canvasRef.current.toDataURL())
+	}
+
 	return (
 		<div>
-			<canvas ref={canvasRef} className='flex mb-4' width={800} height={600} />
+			<canvas onMouseDown={() => mouseDownHandler()} ref={canvasRef} className='flex mb-4' width={800} height={600} />
 		</div>
 	);
 });
