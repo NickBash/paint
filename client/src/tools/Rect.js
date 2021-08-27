@@ -1,8 +1,9 @@
 import Tool from "./Tool";
+import toolState from "../store/toolState";
 
-export default class Rect extends Tool{
-	constructor(canvas) {
-		super(canvas)
+export default class Rect extends Tool {
+	constructor(canvas, socket, id) {
+		super(canvas, socket, id)
 		this.listen()
 	}
 
@@ -14,6 +15,26 @@ export default class Rect extends Tool{
 
 	mouseUpHandler(e) {
 		this.mouseDown = false
+		this.socket.send(JSON.stringify({
+			method: 'draw',
+			id: this.id,
+			figure: {
+				type: 'rect',
+				x: this.startX,
+				y: this.startY,
+				width: this.width,
+				height: this.height,
+				colorBorder: this.ctx.strokeStyle,
+				colorBack: this.ctx.fillStyle
+			}
+		}))
+		this.socket.send(JSON.stringify({
+			method: 'draw',
+			id: this.id,
+			figure: {
+				type: 'finish',
+			}
+		}))
 	}
 
 	mouseDownHandler(e) {
@@ -44,7 +65,18 @@ export default class Rect extends Tool{
 			this.ctx.rect(x, y, w, h)
 			this.ctx.fill()
 			this.ctx.stroke()
+			this.ctx.fillStyle = toolState.fillStyle
+			this.ctx.strokeStyle = toolState.strokeStyle
 		}
 	}
 
+	static staticDraw(ctx, x, y, w, h, colorBorder, colorBack) {
+		ctx.fillStyle = colorBack
+		ctx.strokeStyle = colorBorder
+		ctx.beginPath()
+		ctx.rect(x, y, w, h)
+		ctx.fill()
+		ctx.stroke()
+	}
 }
+

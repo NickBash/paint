@@ -9,8 +9,10 @@ const Modal = () => {
 	const usernameRef = useRef()
 
 	const connectHandler = () => {
-		canvasState.setUsername(usernameRef.current.value)
-		setModal(false)
+		if (usernameRef.current.value !== '') {
+			canvasState.setUsername(usernameRef.current.value)
+			setModal(false)
+		}
 	}
 
 	return (

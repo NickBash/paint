@@ -1,8 +1,8 @@
 import Tool from "./Tool";
 
 export default class Circle extends Tool {
-	constructor(canvas) {
-		super(canvas);
+	constructor(canvas, socket, id) {
+		super(canvas, socket, id);
 		this.listen()
 	}
 
@@ -14,6 +14,25 @@ export default class Circle extends Tool {
 
 	mouseUpHandler(e) {
 		this.mouseDown = false
+		this.socket.send(JSON.stringify({
+			method: 'draw',
+			id: this.id,
+			figure: {
+				type: 'circle',
+				x: this.startX,
+				y: this.startY,
+				r: this.r,
+				colorBorder: this.ctx.strokeStyle,
+				colorBack: this.ctx.fillStyle
+			}
+		}))
+		this.socket.send(JSON.stringify({
+			method: 'draw',
+			id: this.id,
+			figure: {
+				type: 'finish',
+			}
+		}))
 	}
 
 	mouseDownHandler(e) {
@@ -30,8 +49,8 @@ export default class Circle extends Tool {
 			let currentY = e.pageY - e.target.offsetTop
 			let width = currentX - this.startX
 			let height = currentY - this.startY
-			let r = Math.sqrt(width**2 + height**2)
-			this.draw(this.startX, this.startY, r)
+			this.r = Math.sqrt(width ** 2 + height ** 2)
+			this.draw(this.startX, this.startY, this.r)
 		}
 	}
 
@@ -42,9 +61,18 @@ export default class Circle extends Tool {
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 			this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height)
 			this.ctx.beginPath()
-			this.ctx.arc(x, y, r, 0, 2*Math.PI)
+			this.ctx.arc(x, y, r, 0, 2 * Math.PI)
 			this.ctx.fill()
 			this.ctx.stroke()
 		}
+	}
+
+	static staticDraw(ctx, x, y, r, colorBorder, colorBack) {
+		ctx.fillStyle = colorBack
+		ctx.strokeStyle = colorBorder
+		ctx.beginPath()
+		ctx.arc(x, y, r, 0, 2 * Math.PI)
+		ctx.fill()
+		ctx.stroke()
 	}
 }

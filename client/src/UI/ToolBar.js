@@ -16,44 +16,40 @@ import Eraser from "../tools/Eraser";
 import Line from "../tools/Line";
 
 const ToolBar = () => {
-	useEffect(() => {
-		toolState.setTool(new Brush(canvasState.canvas))
-	}, [])
-
 	const items = [
 		{
 			label: 'Кисточка',
 			icon: () => <img className='cursor-pointer' alt="Brush" src={brush} width='100%'/>,
 			command: () => {
-				toolState.setTool(new Brush(canvasState.canvas))
+				toolState.setTool(new Brush(canvasState.canvas, canvasState.socket, canvasState.id))
 			}
 		},
 		{
 			label: 'Прямоугольник',
 			icon: () => <img className='cursor-pointer' alt="Rectangle" src={rect} width="100%"/>,
 			command: () => {
-				toolState.setTool(new Rect(canvasState.canvas))
+				toolState.setTool(new Rect(canvasState.canvas, canvasState.socket, canvasState.id))
 			}
 		},
 		{
 			label: 'Круг',
 			icon: () => <img className='cursor-pointer' alt="Circle" src={circle} width="100%"/>,
 			command: () => {
-				toolState.setTool(new Circle(canvasState.canvas))
+				toolState.setTool(new Circle(canvasState.canvas, canvasState.socket, canvasState.id))
 			}
 		},
 		{
 			label: 'Линия',
 			icon: () => <img className='cursor-pointer' alt="Line" src={line} width="100%"/>,
 			command: () => {
-				toolState.setTool(new Line(canvasState.canvas))
+				toolState.setTool(new Line(canvasState.canvas, canvasState.socket, canvasState.id))
 			}
 		},
 		{
 			label: 'Ластик',
 			icon: () => <img className='cursor-pointer' alt="Eraser" src={eraser} width="100%"/>,
 			command: () => {
-				toolState.setTool(new Eraser(canvasState.canvas))
+				toolState.setTool(new Eraser(canvasState.canvas, canvasState.socket, canvasState.id))
 			}
 		},
 	];
